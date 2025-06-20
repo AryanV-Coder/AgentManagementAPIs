@@ -114,11 +114,15 @@ A FastAPI-based RESTful API for managing agent records, using MongoDB Atlas as t
 
 ## How to Run the Server
 
-### Option 1: Clone and Run Locally
+### Option 1: Use my Deployed APIs on Postman
+- My Render Url - https://agentmanagementapis.onrender.com
+- Use Postman to send requests directly to my Render URL.
+
+### Option 2: Clone and Run Locally
 1. **Clone the repository:**
    ```sh
-   git clone <your-repo-url>
-   cd <repo-folder>
+   git clone https://github.com/AryanV-Coder/AgentManagementAPIs.git
+   cd AgentManagementAPIs
    ```
 2. **Install dependencies:**
    ```sh
@@ -130,26 +134,8 @@ A FastAPI-based RESTful API for managing agent records, using MongoDB Atlas as t
    uvicorn main:app --reload
    ```
 5. **Access the API:**
-   - Use [Postman](https://www.postman.com/) to send requests to `http://localhost:8000`.
-
-### Option 2: Use the Deployed API on Render
-- Once deployed, your API will be accessible at a public Render URL (e.g., `https://your-app.onrender.com`).
-- Use Postman to send requests directly to your Render URL.
-- Example:
-  ```http
-  POST https://your-app.onrender.com/agent/
-  Content-Type: application/json
-  {
-    "codename": "jamesbond",
-    "password": "secret123",
-    "description": "MI6 Agent"
-  }
-  ```
+   - Use [Postman](https://www.postman.com/) to send requests to `http://localhost:8000` or Use FastAPI Swagger UI
 
 ## Interacting with the API
 - Use Postman to test all endpoints.
 - Set the request type (GET, POST, PUT, DELETE) and provide the required parameters or body as shown above.
-
----
-
-Feel free to fork, clone, or deploy this project. For any issues, open an issue in the repository.
