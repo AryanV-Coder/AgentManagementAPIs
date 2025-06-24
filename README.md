@@ -152,4 +152,45 @@ A FastAPI-based RESTful API for managing agent records, using MongoDB Atlas as t
 
 ---
 
+## Testing & Coverage
+
+### Testing Frameworks/Tools Used
+- **unittest**: Python's built-in testing framework
+- **unittest.mock**: For mocking database operations in unit tests
+- **FastAPI TestClient**: For API endpoint testing
+- **coverage.py**: For measuring code coverage
+
+### Types of Tests
+- **Unit Tests:**
+  - Test the logic of each API endpoint in isolation.
+  - Use mocking to simulate database operations (e.g., agent found/not found, conflict, etc.).
+  - Example: Creating, updating, deleting, and retrieving agents with mocked DB responses.
+- **Integration Tests:**
+  - Test the interaction between the FastAPI server and the real MongoDB database.
+  - Ensure CRUD operations work end-to-end.
+  - Example: Actually inserting, updating, and deleting agents in the test database.
+- **API Tests:**
+  - Use FastAPI's TestClient to send HTTP requests to the API endpoints.
+  - Validate correct status codes and responses for all endpoints.
+
+### How to Run the Tests
+1. **Run all tests and check coverage:**
+   ```sh
+   coverage run --source=main,db,models -m unittest tests.py
+   coverage report -m
+   ```
+2. **(Optional) Generate an HTML coverage report:**
+   ```sh
+   coverage html
+   open htmlcov/index.html
+   ```
+
+### Test Coverage Screenshot
+
+![Coverage Screenshot](coverage_screenshot.png)
+
+> **Note:** The screenshot above shows the achieved coverage (96%).
+
+---
+
 Feel free to fork, clone, or deploy this project. For any issues, open an issue in the repository.
