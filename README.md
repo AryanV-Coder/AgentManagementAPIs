@@ -204,11 +204,24 @@ This creates an `openapi.json` file that can be used with Keploy API testing or 
 
 This project integrates with [Keploy](https://keploy.io/) for AI-powered API testing:
 
+### Setup Process
+1. **Go to** [app.keploy.io](https://app.keploy.io/) and create an account
+2. **Create/Select** your project
+3. **Upload** the `openapi.json` file to create test suites
+4. **Get your test command** from Test Suite → "Run test suites natively"
+5. **Update** the CI/CD workflow with your specific command
+
 ### Keploy Test Reports
 
 ![Keploy Test Report](keploy_test_report.png)
 
 > **Note:** The screenshot above shows successful Keploy API test execution with detailed test results.
+
+### Setup Helper
+Use the setup helper script for step-by-step guidance:
+```sh
+./setup_keploy.sh
+```
 
 ### Manual Testing with Curl Commands
 Use the provided curl commands to test the API:

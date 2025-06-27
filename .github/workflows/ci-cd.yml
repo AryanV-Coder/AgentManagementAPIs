@@ -109,20 +109,20 @@ jobs:
       with:
         name: openapi-schema
         
-    - name: Install Keploy
+    - name: Install Keploy CLI
       run: |
-        curl --silent --location "https://github.com/keploy/keploy/releases/latest/download/keploy_linux_amd64.tar.gz" | tar xz -C /tmp
-        sudo mkdir -p /usr/local/bin && sudo mv /tmp/keploy /usr/local/bin
+        curl --silent -L https://keploy.io/ent/install.sh | bash
         
-    - name: Run Keploy API Tests
+    - name: Run Keploy Test Suite
       env:
-        KEPLOY_MODE: test
+        KEPLOY_API_KEY: ${{ secrets.KEPLOY_API_KEY }}
       run: |
-        # Create test cases from OpenAPI schema
-        keploy generate --openapi openapi.json --host http://localhost:8000
-        
-        # Run the tests
-        keploy test --delay 10
+        # Note: Replace the --app and --base-path values with your actual values from Keploy Dashboard
+        # This is a placeholder command - you'll get the actual command from your Keploy dashboard
+        # Example: keploy test-suite --app=your-app-id --base-path http://localhost:8000 --cloud
+        echo "Please replace this with your actual Keploy test command from the dashboard"
+        echo "Go to app.keploy.io -> Test Suite -> Run test suites natively -> Copy command"
+        echo "Update this workflow with: keploy test-suite --app=YOUR_APP_ID --base-path http://localhost:8000 --cloud"
         
     - name: Upload Keploy Test Reports
       uses: actions/upload-artifact@v3
@@ -132,3 +132,5 @@ jobs:
         path: |
           keploy/
           test-reports/
+
+          
