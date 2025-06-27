@@ -39,16 +39,22 @@ jobs:
         sleep 10
         
     - name: Run unit tests
+      env:
+        CI: true
       run: |
         python -m pytest tests.py -v
         
     - name: Run coverage
+      env:
+        CI: true
       run: |
         coverage run --source=main,db,models -m unittest tests.py
         coverage report -m
         coverage xml
         
     - name: Start FastAPI server
+      env:
+        CI: true
       run: |
         uvicorn main:app --host 0.0.0.0 --port 8000 &
         sleep 10
@@ -100,6 +106,8 @@ jobs:
         sleep 10
         
     - name: Start FastAPI server
+      env:
+        CI: true
       run: |
         uvicorn main:app --host 0.0.0.0 --port 8000 &
         sleep 10
@@ -115,6 +123,7 @@ jobs:
         
     - name: Run Keploy Test Suite
       env:
+        CI: true
         KEPLOY_API_KEY: ${{ secrets.KEPLOY_API_KEY }}
       run: |
         # Note: Replace the --app and --base-path values with your actual values from Keploy Dashboard
