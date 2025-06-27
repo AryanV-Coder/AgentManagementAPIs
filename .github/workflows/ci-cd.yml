@@ -1,0 +1,134 @@
+name: CI/CD with Keploy API Testing
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      mongodb:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.adminCommand({ping: 1})'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Wait for MongoDB
+      run: |
+        sleep 10
+        
+    - name: Run unit tests
+      run: |
+        python -m pytest tests.py -v
+        
+    - name: Run coverage
+      run: |
+        coverage run --source=main,db,models -m unittest tests.py
+        coverage report -m
+        coverage xml
+        
+    - name: Start FastAPI server
+      run: |
+        uvicorn main:app --host 0.0.0.0 --port 8000 &
+        sleep 10
+      
+    - name: Test server is running
+      run: |
+        curl -f http://localhost:8000/docs || exit 1
+        
+    - name: Generate OpenAPI Schema
+      run: |
+        python generate_openapi.py
+        
+    - name: Upload OpenAPI Schema
+      uses: actions/upload-artifact@v3
+      with:
+        name: openapi-schema
+        path: openapi.json
+
+  keploy-api-testing:
+    needs: test
+    runs-on: ubuntu-latest
+    
+    services:
+      mongodb:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.adminCommand({ping: 1})'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Wait for MongoDB
+      run: |
+        sleep 10
+        
+    - name: Start FastAPI server
+      run: |
+        uvicorn main:app --host 0.0.0.0 --port 8000 &
+        sleep 10
+        
+    - name: Download OpenAPI Schema
+      uses: actions/download-artifact@v3
+      with:
+        name: openapi-schema
+        
+    - name: Install Keploy
+      run: |
+        curl --silent --location "https://github.com/keploy/keploy/releases/latest/download/keploy_linux_amd64.tar.gz" | tar xz -C /tmp
+        sudo mkdir -p /usr/local/bin && sudo mv /tmp/keploy /usr/local/bin
+        
+    - name: Run Keploy API Tests
+      env:
+        KEPLOY_MODE: test
+      run: |
+        # Create test cases from OpenAPI schema
+        keploy generate --openapi openapi.json --host http://localhost:8000
+        
+        # Run the tests
+        keploy test --delay 10
+        
+    - name: Upload Keploy Test Reports
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: keploy-reports
+        path: |
+          keploy/
+          test-reports/

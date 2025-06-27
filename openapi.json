@@ -1,0 +1,265 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Agent Management API",
+    "description": "A CRUD API for managing agents with MongoDB",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/agent/{codename}/{password}": {
+      "get": {
+        "tags": [
+          "agents"
+        ],
+        "summary": "Getagent",
+        "description": "Get an agent by codename and password\n\n- **codename**: The agent's codename\n- **password**: The agent's password",
+        "operationId": "getAgent_agent__codename___password__get",
+        "parameters": [
+          {
+            "name": "codename",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Codename"
+            }
+          },
+          {
+            "name": "password",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Password"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "agents"
+        ],
+        "summary": "Deleteagent",
+        "description": "Delete an agent by codename and password\n\n- **codename**: The agent's codename\n- **password**: The agent's password",
+        "operationId": "deleteAgent_agent__codename___password__delete",
+        "parameters": [
+          {
+            "name": "codename",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Codename"
+            }
+          },
+          {
+            "name": "password",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Password"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/agent/": {
+      "put": {
+        "tags": [
+          "agents"
+        ],
+        "summary": "Updateagent",
+        "description": "Update an existing agent\n\n- **codename**: The agent's codename (used for identification)\n- **password**: The agent's current password (used for identification)\n- **description**: New description for the agent",
+        "operationId": "updateAgent_agent__put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Input_For_Post_And_Put"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "agents"
+        ],
+        "summary": "Createagent",
+        "description": "Create a new agent\n\n- **codename**: Unique codename for the agent\n- **password**: Password for the agent\n- **description**: Description of the agent",
+        "operationId": "createAgent_agent__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Input_For_Post_And_Put"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Input_For_Post_And_Put": {
+        "properties": {
+          "codename": {
+            "type": "string",
+            "title": "Codename"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          }
+        },
+        "type": "object",
+        "required": [
+          "codename",
+          "password",
+          "description"
+        ],
+        "title": "Input_For_Post_And_Put"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "agents",
+      "description": "Operations with agents"
+    }
+  ]
+}

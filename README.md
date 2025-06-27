@@ -183,4 +183,58 @@ A FastAPI-based RESTful API for managing agent records, using MongoDB Atlas as t
 
 ---
 
+## OpenAPI Schema & Documentation
+
+This API includes comprehensive OpenAPI documentation accessible through:
+
+- **Interactive API Docs (Swagger UI):** `/docs`
+- **Alternative Docs (ReDoc):** `/redoc`
+- **OpenAPI Schema (JSON):** `/openapi.json`
+
+### Generate OpenAPI Schema
+To generate the OpenAPI schema file locally:
+```sh
+python generate_openapi.py
+```
+This creates an `openapi.json` file that can be used with Keploy API testing or imported into other tools.
+
+---
+
+## API Testing with Keploy
+
+This project integrates with [Keploy](https://keploy.io/) for AI-powered API testing:
+
+### Keploy Test Reports
+
+![Keploy Test Report](keploy_test_report.png)
+
+> **Note:** The screenshot above shows successful Keploy API test execution with detailed test results.
+
+### Manual Testing with Curl Commands
+Use the provided curl commands to test the API:
+```sh
+./api_test_commands.sh
+```
+
+---
+
+## CI/CD Pipeline
+
+This project includes a comprehensive CI/CD pipeline using **GitHub Actions** that:
+
+1. **Runs Unit Tests:** Executes all unit, integration, and API tests
+2. **Measures Coverage:** Generates coverage reports (96% achieved)
+3. **Starts Services:** Spins up MongoDB and FastAPI server
+4. **Generates OpenAPI Schema:** Creates schema for API testing
+5. **Runs Keploy API Tests:** Executes AI-powered API tests
+6. **Uploads Artifacts:** Saves test reports and coverage data
+
+### Pipeline Configuration
+See `.github/workflows/ci-cd.yml` for the complete pipeline configuration.
+
+### Pipeline Status
+![CI/CD Pipeline](https://github.com/AryanV-Coder/AgentManagementAPIs/actions/workflows/ci-cd.yml/badge.svg)
+
+---
+
 Feel free to fork, clone, or deploy this project. For any issues, open an issue in the repository.
