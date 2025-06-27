@@ -25,7 +25,7 @@ jobs:
     - uses: actions/checkout@v4
     
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
         
@@ -62,7 +62,7 @@ jobs:
         python generate_openapi.py
         
     - name: Upload OpenAPI Schema
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: openapi-schema
         path: openapi.json
@@ -86,7 +86,7 @@ jobs:
     - uses: actions/checkout@v4
     
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
         
@@ -105,7 +105,7 @@ jobs:
         sleep 10
         
     - name: Download OpenAPI Schema
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: openapi-schema
         
@@ -125,7 +125,7 @@ jobs:
         echo "Update this workflow with: keploy test-suite --app=YOUR_APP_ID --base-path http://localhost:8000 --cloud"
         
     - name: Upload Keploy Test Reports
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: keploy-reports
